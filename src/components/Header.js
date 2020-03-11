@@ -23,8 +23,11 @@ class Header extends React.Component {
 
     allChecked = () => {
         const {allStateChecked} = this.state
+        const {arrayOfTask} = this.props.data;
         this.setState( { allStateChecked : !allStateChecked })
-
+        arrayOfTask.map(elem => {
+            elem.completed = allStateChecked
+        })
     }
 
     render() {

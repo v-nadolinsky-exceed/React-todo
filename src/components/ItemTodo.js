@@ -29,7 +29,7 @@ class ItemTodo extends React.Component {
             {
                showTask &&  <div  className="item-list">
                             <input type="checkbox"  
-                            /* checked={completed} */
+                            checked={completed}
                             onChange={() => this.isChecked(id)}
                             />  
                             {inputValue} 

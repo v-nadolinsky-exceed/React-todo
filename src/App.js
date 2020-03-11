@@ -10,7 +10,6 @@ class App extends React.Component {
       arrayOfTask : [],
      /*  showArray: [], */
       inputValue: '',
-      chechedAll: false,
       swith: "all"
   }
 
@@ -26,7 +25,7 @@ class App extends React.Component {
  addTask = (event) => {
    const {inputValue, arrayOfTask } = this.state
   if(event.key === 'Enter' && event.target.value !== '') {
-      const newElem = {id: +new Date(), inputValue, completed:false}
+      const newElem = {id: +new Date(), inputValue, completed: null}
       this.setState({
         arrayOfTask: [...arrayOfTask, newElem], 
         inputValue: ''
@@ -34,32 +33,32 @@ class App extends React.Component {
     }
   }
 
-  /* generateArray = () => {
+ 
+
+  itemLeft = () => {
     const {arrayOfTask} = this.state
-    const completeArray = [];
-    const activeArray = [];
-      arrayOfTask.map(elem => {
-      if(elem.completed === true) {
-        return completeArray.push(elem)
-      }else if(elem.completed === false) {
-        return activeArray.push(elem)
-      }else {
-        return arrayOfTask
-      }
-    })
-  } */
+    let value = null;
+    value = arrayOfTask.filter(elem => elem.completed === false)
+    return value.length
+  }
+
+  removeCompletedTask = (e) => {
+    e.preventDefault()
+    const { arrayOfTask } = this.state
+    const completedFalse = arrayOfTask.filter(elem =>{
+        return elem.completed === null
+        })
+    this.setState({arrayOfTask : [...completedFalse] })
+  }
 
   generateArray = () => {
     const {arrayOfTask, showArray ,swith } = this.state
-    const completeArray = null;
-    const activeArray = null;
+    let completeArray = null;
+    let activeArray = null;
 
     if(swith === "active") {
-      activeArray = arrayOfTask.filter(elem => elem.completed === false)
+      activeArray = arrayOfTask.filter(elem => elem.completed === null)
       return activeArray
-     /*  this.setState({
-        showArray : []
-      }) */
     }else if (swith === "completed") {
       completeArray = arrayOfTask.filter(elem => elem.completed === true)
       return completeArray
@@ -68,7 +67,17 @@ class App extends React.Component {
     }
   }
 
-  
+  all = () => {
+    this.setState({swith: "all"})
+  }
+
+  active = () => {
+    this.setState({swith: "active"})
+  }
+
+  completed = () => {
+    this.setState({swith: "completed"})
+  }
 
 
   render() {
@@ -82,10 +91,26 @@ class App extends React.Component {
       generateArray={this.generateArray}
       /* isChecked={this.isChecked} */
       data={this.state} />
-      <Footer swith={this.state.swith}/>
+      <Footer data={this.state} all={this.all} active={this.active} completed={this.completed} itemLeft={this.itemLeft} removeCompletedTask={this.removeCompletedTask}/>
       </>
     )
   }
 }
 
 export default App;
+
+
+ /* generateArray = () => {
+    const {arrayOfTask} = this.state
+    const completeArray = [];
+    const activeArray = [];
+      arrayOfTask.map(elem => {
+      if(elem.completed === true) {
+        return completeArray.push(elem)
+      }else if(elem.completed === false) {
+        return activeArray.push(elem)
+      }else {
+        return arrayOfTask
+      }
+    })
+  } */
