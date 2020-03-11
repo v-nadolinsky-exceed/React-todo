@@ -31,7 +31,6 @@ class Header extends React.Component {
     }
 
     render() {
-        /* console.log(this.state.allStateChecked) */
         return( 
             <Fragment>
             <span onClick={this.allChecked}>X</span>

@@ -8,9 +8,8 @@ import ItemTodo from './components/ItemTodo';
 class App extends React.Component {
   state = {
       arrayOfTask : [],
-     /*  showArray: [], */
       inputValue: '',
-      swith: "all"
+      swith: "all",
   }
 
   handleChange = (event) => {
@@ -33,14 +32,13 @@ class App extends React.Component {
     }
   }
 
- 
-
-  itemLeft = () => {
-    const {arrayOfTask} = this.state
-    let value = null;
-    value = arrayOfTask.filter(elem => elem.completed === false)
-    return value.length
-  }
+  // itemLeft = () => {
+  //   const {arrayOfTask} = this.state
+  //   let value = null;
+  //   value = arrayOfTask.filter(elem => elem.completed === false)
+  //   return value
+  //   /* this.setState({itemLeft: value.length}) */
+  // }
 
   removeCompletedTask = (e) => {
     e.preventDefault()
@@ -81,7 +79,6 @@ class App extends React.Component {
 
 
   render() {
-    console.log(this.state.swith)
     return(
       <>
       <h1>ToDo</h1>
@@ -89,28 +86,17 @@ class App extends React.Component {
       handleChange={this.handleChange} 
       addTask={this.addTask} 
       generateArray={this.generateArray}
-      /* isChecked={this.isChecked} */
       data={this.state} />
-      <Footer data={this.state} all={this.all} active={this.active} completed={this.completed} itemLeft={this.itemLeft} removeCompletedTask={this.removeCompletedTask}/>
+      <Footer data={this.state} 
+      all={this.all} 
+      active={this.active} 
+      completed={this.completed} 
+      /* itemLeft={this.itemLeft}  */
+      removeCompletedTask={this.removeCompletedTask}
+      />
       </>
     )
   }
 }
 
 export default App;
-
-
- /* generateArray = () => {
-    const {arrayOfTask} = this.state
-    const completeArray = [];
-    const activeArray = [];
-      arrayOfTask.map(elem => {
-      if(elem.completed === true) {
-        return completeArray.push(elem)
-      }else if(elem.completed === false) {
-        return activeArray.push(elem)
-      }else {
-        return arrayOfTask
-      }
-    })
-  } */
