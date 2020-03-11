@@ -5,24 +5,34 @@ import ItemTodo from './ItemTodo';
 
 class Header extends React.Component {
 
+    state = {
+        allStateChecked : false
+    }
 
     renderItems = (e) => {
-        const {data} = this.props;
+        const {arrayOfTask} = this.props.data;
         let newItem = null;
 
-        if(data.length) {
-            newItem = data.map((e,i,m) => {
-                return <ItemTodo key={(i+1).toString()} data={e.inputValue} elem={m} />
+        if(arrayOfTask.length) {
+            newItem = this.props.generateArray().map((e,i,a) => {
+                return <ItemTodo key={(i+1).toString()} elem={e} data={arrayOfTask} />
             })
         } 
         return newItem; 
     }
 
+    allChecked = () => {
+        const {allStateChecked} = this.state
+        this.setState( { allStateChecked : !allStateChecked })
+
+    }
+
     render() {
+        /* console.log(this.state.allStateChecked) */
         return( 
             <Fragment>
-            <span >X</span>
-            <input value={this.props.inputValue}
+            <span onClick={this.allChecked}>X</span>
+            <input value={this.props.data.inputValue}
             onChange={this.props.handleChange}
             onKeyPress={this.props.addTask} 
             type="text"/>

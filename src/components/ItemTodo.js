@@ -4,28 +4,36 @@ import Header from './Header'
 class ItemTodo extends React.Component {
 
    state = {
-       show : true,
-       
+       showTask : true,
    }
 
-    clickClear = (key) => {
-        this.setState({show: false})
-        const elem = this.props.elem;
-        elem.splice(key,1);
-        this.setState({elem})
+    removeTask = (id) => {
+        this.setState({showTask: false})
+        const data = this.props.data;
+        data.splice(data.id,1);
+        this.setState({data})
+    }
+
+    isChecked = (id) => {
+        const data = this.props.data
+        const elem = data.find(elem=> elem.id === id)
+        elem.completed = !elem.completed
     }
 
     render() {
-        const {show} = this.state
-
+        const {showTask} = this.state
+        const {inputValue, id, completed} = this.props.elem
+        console.log(this.props.data)
         return( 
             <Fragment>
             {
-               show &&  <div  className="item-list">
+               showTask &&  <div  className="item-list">
                             <input type="checkbox"  
-                            /> 
-                            {this.props.data} 
-                            <span onClick={() => this.clickClear(this.key)}>X</span>
+                            /* checked={completed} */
+                            onChange={() => this.isChecked(id)}
+                            />  
+                            {inputValue} 
+                            <span onClick={() => this.removeTask(id)}>X</span>
                         </div>
             }
             </Fragment>

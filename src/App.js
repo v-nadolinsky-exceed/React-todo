@@ -7,9 +7,11 @@ import ItemTodo from './components/ItemTodo';
 
 class App extends React.Component {
   state = {
-      arrayOfElements : [],
+      arrayOfTask : [],
+     /*  showArray: [], */
       inputValue: '',
-      chechAll: false
+      chechedAll: false,
+      swith: "all"
   }
 
   handleChange = (event) => {
@@ -22,33 +24,65 @@ class App extends React.Component {
  };
 
  addTask = (event) => {
-   const {inputValue, arrayOfElements } = this.state
+   const {inputValue, arrayOfTask } = this.state
   if(event.key === 'Enter' && event.target.value !== '') {
-      const  generId = arrayOfElements.length+1;
-      const newElem = {id: generId, inputValue, completed:false}
-      this.setState(state => {
-        const newArr = state.arrayOfElements.concat()
-        newArr.push(newElem)
-        return {
-          arrayOfElements: newArr, 
-          inputValue: ''
-        }
+      const newElem = {id: +new Date(), inputValue, completed:false}
+      this.setState({
+        arrayOfTask: [...arrayOfTask, newElem], 
+        inputValue: ''
       })
     }
   }
 
+  /* generateArray = () => {
+    const {arrayOfTask} = this.state
+    const completeArray = [];
+    const activeArray = [];
+      arrayOfTask.map(elem => {
+      if(elem.completed === true) {
+        return completeArray.push(elem)
+      }else if(elem.completed === false) {
+        return activeArray.push(elem)
+      }else {
+        return arrayOfTask
+      }
+    })
+  } */
+
+  generateArray = () => {
+    const {arrayOfTask, showArray ,swith } = this.state
+    const completeArray = null;
+    const activeArray = null;
+
+    if(swith === "active") {
+      activeArray = arrayOfTask.filter(elem => elem.completed === false)
+      return activeArray
+     /*  this.setState({
+        showArray : []
+      }) */
+    }else if (swith === "completed") {
+      completeArray = arrayOfTask.filter(elem => elem.completed === true)
+      return completeArray
+    }else {
+      return arrayOfTask
+    }
+  }
+
+  
+
+
   render() {
-    const {inputValue, arrayOfElements} = this.state
-       console.log(arrayOfElements)
+    console.log(this.state.swith)
     return(
       <>
       <h1>ToDo</h1>
       <Header 
       handleChange={this.handleChange} 
       addTask={this.addTask} 
-      inputValue={inputValue} 
-      data={arrayOfElements} />
-      <Footer />
+      generateArray={this.generateArray}
+      /* isChecked={this.isChecked} */
+      data={this.state} />
+      <Footer swith={this.state.swith}/>
       </>
     )
   }
