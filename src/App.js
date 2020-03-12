@@ -2,14 +2,15 @@ import React from 'react';
 import './App.css';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import ItemTodo from './components/ItemTodo';
+import ItemList from './components/ItemList';
 
 
 class App extends React.Component {
   state = {
       arrayOfTask : [],
       inputValue: '',
-      swith: "all",
+      currentValueForFilter: "all",
+      allCompleted: false
   }
 
   handleChange = (event) => {
@@ -24,7 +25,7 @@ class App extends React.Component {
  addTask = (event) => {
    const {inputValue, arrayOfTask } = this.state
   if(event.key === 'Enter' && event.target.value !== '') {
-      const newElem = {id: +new Date(), inputValue, completed: null}
+      const newElem = {id: +new Date(), inputValue, completed: false } 
       this.setState({
         arrayOfTask: [...arrayOfTask, newElem], 
         inputValue: ''
@@ -32,49 +33,67 @@ class App extends React.Component {
     }
   }
 
-  // itemLeft = () => {
-  //   const {arrayOfTask} = this.state
-  //   let value = null;
-  //   value = arrayOfTask.filter(elem => elem.completed === false)
-  //   return value
-  //   /* this.setState({itemLeft: value.length}) */
-  // }
 
-  removeCompletedTask = (e) => {
-    e.preventDefault()
+
+  setFilter = (value) => {
+    this.setState({currentValueForFilter: value})
+  }
+
+  filterArrayOfItems = (array, condition) => array.filter(item => item.completed !== condition)
+
+  generateArrayWithFilter = () => {
+    const { arrayOfTask, currentValueForFilter } = this.state;
+    switch (currentValueForFilter) {
+      case "active" : 
+        return this.filterArrayOfItems(arrayOfTask, true);
+      case "completed": 
+        return this.filterArrayOfItems(arrayOfTask, false);
+        default:
+          return arrayOfTask;
+    }
+  }
+
+  completedTask = (id) => {
+    this.setState(state => {
+      const newArray = [...state.arrayOfTask]
+      const task = newArray.find(task => task.id === id)
+      task.completed = !task.completed
+      return {
+        arrayOfTask: newArray
+      }
+    })
+  }
+
+  removeCompletedTask = () => {
     const { arrayOfTask } = this.state
     const completedFalse = arrayOfTask.filter(elem =>{
-        return elem.completed === null
+        return elem.completed === false
         })
     this.setState({arrayOfTask : [...completedFalse] })
   }
 
-  generateArray = () => {
-    const {arrayOfTask, showArray ,swith } = this.state
-    let completeArray = null;
-    let activeArray = null;
+  removeTask = (id) => {
+    const data = this.state.arrayOfTask;
+    data.splice(data.id,1);
+    this.setState({data})
+}
 
-    if(swith === "active") {
-      activeArray = arrayOfTask.filter(elem => elem.completed === null)
-      return activeArray
-    }else if (swith === "completed") {
-      completeArray = arrayOfTask.filter(elem => elem.completed === true)
-      return completeArray
-    }else {
-      return arrayOfTask
-    }
-  }
 
-  all = () => {
-    this.setState({swith: "all"})
-  }
-
-  active = () => {
-    this.setState({swith: "active"})
-  }
-
-  completed = () => {
-    this.setState({swith: "completed"})
+  allCompleted = () => {
+    this.setState(state => {
+      const newArray = [...state.arrayOfTask].map(task => {
+        if (state.allCompleted) {
+          task.completed = false
+        } else {
+          task.completed = true
+        }
+        return task
+      })
+      return {
+        arrayOfTask: newArray,
+        allCompleted: !state.allCompleted
+      }
+    })
   }
 
 
@@ -83,15 +102,14 @@ class App extends React.Component {
       <>
       <h1>ToDo</h1>
       <Header 
-      handleChange={this.handleChange} 
-      addTask={this.addTask} 
-      generateArray={this.generateArray}
-      data={this.state} />
+        allCompleted={this.allCompleted}
+        handleChange={this.handleChange} 
+        addTask={this.addTask}
+        value = {this.state.inputValue} 
+      />
+      <ItemList completedTask={this.completedTask} generateArrayWithFilter={this.generateArrayWithFilter} removeTask={this.removeTask}/>
       <Footer data={this.state} 
-      all={this.all} 
-      active={this.active} 
-      completed={this.completed} 
-      /* itemLeft={this.itemLeft}  */
+        setFilter={this.setFilter}
       removeCompletedTask={this.removeCompletedTask}
       />
       </>

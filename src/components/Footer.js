@@ -5,13 +5,14 @@ class Footer extends React.Component {
  
 
     render() {
-       const {all, active , completed , itemLeft ,removeCompletedTask} = this.props
+       const {setFilter,removeCompletedTask} = this.props
+       const amountActiv = this.props.data.arrayOfTask.filter(item => item.completed === false)
         return ( 
             <div className="footer-flex" >
-                <div className="total-active">{}:item left</div>
-                <button className="btn btn_all" onClick={all}>All</button>
-                <button className="btn btn_active" onClick={active}>Active</button>
-                <button className="btn btn_completed" onClick={completed}
+                <div className="total-active">{amountActiv.length}:item left</div>
+                <button className="btn btn_all" onClick={() => setFilter('all')}>All</button>
+                <button className="btn btn_active" onClick={() => setFilter('active')}>Active</button>
+                <button className="btn btn_completed" onClick={() => setFilter('completed')}
                 >Completed</button>
                 <a href="#" onClick={removeCompletedTask}>Clear completed</a>
             </div>

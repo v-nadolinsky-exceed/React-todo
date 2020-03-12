@@ -1,42 +1,19 @@
-import React,{Fragment} from 'react';
-import Header from './Header'
+import React from 'react';
 
 class ItemTodo extends React.Component {
 
-   state = {
-       showTask : true,
-   }
-
-    removeTask = (id) => {
-        this.setState({showTask: false})
-        const data = this.props.data;
-        data.splice(data.id,1);
-        this.setState({data})
-    }
-
-    isChecked = (id) => {
-        const data = this.props.data
-        const elem = data.find(elem=> elem.id === id)
-        elem.completed = !elem.completed
-    }
 
     render() {
-        const {showTask} = this.state
-        const {inputValue, id, completed} = this.props.elem
-        console.log(this.props.data)
+        const {inputValue, id, completed, completedTask} = this.props;
         return( 
-            <Fragment>
-            {
-               showTask &&  <div  className="item-list">
-                            <input type="checkbox"  
-                            checked={completed}
-                            onChange={() => this.isChecked(id)}
-                            />  
-                            {inputValue} 
-                            <span onClick={() => this.removeTask(id)}>X</span>
-                        </div>
-            }
-            </Fragment>
+            <div className="item-todo">
+                <input type="checkbox"
+                    checked={completed}
+                    onChange={() => completedTask(id)}
+                />  
+                {inputValue} 
+                <span onClick={() => {this.props.removeTask(id)}}>X</span>
+            </div>
         )
     }
 }
