@@ -132,7 +132,6 @@ class App extends React.Component {
       saveInput={this.saveInput}
       inputStateAfterClick={this.state.inputStateAfterClick}
       />
-     {/*  <ItemTodo /> */}
       <Footer data={this.state} 
         setFilter={this.setFilter}
       removeCompletedTask={this.removeCompletedTask}

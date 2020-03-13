@@ -41,8 +41,7 @@ class ItemTodo extends React.Component {
 
     render() {
         const {inputValue, id, completed, completedTask,removeTask, isDoubleClick,handlDblClick, newValueTask, editedValue, inputStateAfterClick ,value} = this.props;
-        // console.log(inputValue)
-        // console.log(this.state.editedValue)
+
         // const arr = inputStateAfterClick ? editedValue : inputValue 
         return( 
             <div className="item-todo">
