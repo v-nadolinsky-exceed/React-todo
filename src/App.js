@@ -11,7 +11,7 @@ class App extends React.Component {
       arrayOfTask : [],
       inputValue: '',
       editedValue: '',
-      inputStateAfterClick: true,
+      // inputStateAfterClick: true,
       currentValueForFilter: "all",
       allCompleted: false
   }
