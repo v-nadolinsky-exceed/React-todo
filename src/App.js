@@ -10,8 +10,8 @@ class App extends React.Component {
   state = {
       arrayOfTask : [],
       inputValue: '',
-      editedValue: '',
-      // inputStateAfterClick: true,
+     /*  editedValue: '', */
+      inputStateAfterClick: true,
       currentValueForFilter: "all",
       allCompleted: false
   }
@@ -28,9 +28,6 @@ class App extends React.Component {
  addTask = (event) => {
    const {inputValue, arrayOfTask ,editedValue,inputStateAfterClick} = this.state
   if(event.key === 'Enter' && event.target.value !== '') {
-    // let value = null
-    // if(inputStateAfterClick) value = inputValue
-    // else  value = 'as'
       const newElem = {id: +new Date(), inputValue, completed: false } 
       this.setState({
         arrayOfTask: [...arrayOfTask, newElem], 
@@ -85,7 +82,6 @@ class App extends React.Component {
     this.setState(state => {
       const newArray = [...state.arrayOfTask].map(task => {
         if (state.allCompleted) {
-          // return {...task, write new property here}
           task.completed = false
         } else {
           task.completed = true
@@ -99,18 +95,14 @@ class App extends React.Component {
     })
   }
 
-  newValueTask = (e) => {
-    let value = e.target.value
-   this.setState (state =>({
-      editedValue : value,
-   }))
-  }
+  
 
-  handlDblClick = () => {
-        this.setState(state =>({
-            inputStateAfterClick: !state.inputStateAfterClick
-        }))
-  }
+
+  // handlDblClick = () => {
+  //       this.setState(state =>({
+  //           inputStateAfterClick: !state.inputStateAfterClick
+  //       }))
+  // }
 
   render() {
     console.log(this.state.editedValue)
@@ -118,20 +110,25 @@ class App extends React.Component {
       <>
       <h1 className="title">todos</h1>
       <div className="container">
-      <Header 
+      <Header
+        arrayOfTask={this.state.arrayOfTask} 
         allCompleted={this.allCompleted}
         handleChange={this.handleChange} 
         addTask={this.addTask}
         value = {this.state.inputValue} 
       />
-      <ItemList completedTask={this.completedTask}
+      <ItemList 
+      completedTask={this.completedTask}
       generateArrayWithFilter={this.generateArrayWithFilter} 
       removeTask={this.removeTask}
       newValueTask={this.newValueTask}
       handlDblClick={this.handlDblClick}
-      saveInput={this.saveInput}
+      // saveInput={this.saveInput}
       inputStateAfterClick={this.state.inputStateAfterClick}
+      arrayOfTask={this.state.arrayOfTask}
+      editedValue={this.state.editedValue}
       />
+     {/*  <ItemTodo /> */}
       <Footer data={this.state} 
         setFilter={this.setFilter}
       removeCompletedTask={this.removeCompletedTask}

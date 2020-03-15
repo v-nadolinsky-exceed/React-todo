@@ -9,20 +9,25 @@
 
 .arrowdown {
     position: absolute;
+    display: none;
     top: 50%;
     left: 10px;
     background: white;
     outline: none;
-    border: solid  rgba(112, 107, 107, 0.411);
+    border: solid rgba(112, 107, 107, 0.411);
     border-width: 0 3px 3px 0;
-    display: inline-block;
+    /* display: inline-block; */
     padding: 5px;
     transform: rotate(45deg) translateY(-90%);
 }
 
+.active {
+    display: inline-block;
+}
+
 .arrowdown:focus,
 .arrowdown:active {
-    border: solid  black;
+    border: solid black;
     border-width: 0 3px 3px 0;
 }
 
@@ -36,5 +41,5 @@
 }
 
 .header__input::placeholder {
-    color:#E8E9EB
+    color: #E8E9EB
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import ItemTodo from './ItemTodo';
 
 const ItemList = (props) => {
-     const { generateArrayWithFilter, completedTask ,removeTask,handlDblClick,newValueTask,isDoubleClick, saveInput,inputStateAfterClick} = props;
+     const { generateArrayWithFilter, completedTask ,removeTask,handlDblClick,newValueTask,isDoubleClick, saveInput,inputStateAfterClick,arrayOfTask,editedValue} = props;
     const currentArrayOfTasks = generateArrayWithFilter();
 
     return (
@@ -16,6 +16,8 @@ const ItemList = (props) => {
                 isDoubleClick={isDoubleClick}
                 saveInput={saveInput}
                 inputStateAfterClick={inputStateAfterClick}
+                arrayOfTask={arrayOfTask}
+                editedValue={editedValue}
                 {...task}/>)
             }
         </div>

@@ -4,12 +4,13 @@ import './Header.css'
 class Header extends React.Component {
 
     render() {
+        const arrowShow = this.props.arrayOfTask.length ? true : false
         return( 
             <div className="header">
                 <div 
                 onClick={this.props.allCompleted}
                 >
-                    <button className={`arrowdown ${true && 'active'}`}></button>
+                    <button className={`arrowdown ${arrowShow && 'active'}`}></button>
                 </div>
                 <input 
                 className="header__input"
