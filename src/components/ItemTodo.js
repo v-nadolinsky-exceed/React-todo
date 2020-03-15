@@ -3,25 +3,17 @@ import './ItemTodo.css'
 
 class ItemTodo extends React.Component {
     state = {
-        inputStateAfterClick: true,
-        // arr: [],
+        inputStateAfterClick: this.props.inputStateAfterClick,
         newValue: '',
         editedValue: ''
+        // editedValueNew: this.props.editedValue,
+        // arrayOfTask: this.props.arrayOfTask
 
         // text which we get frop this.props.text  for example
         // flag which help to switch between two states 
     }
 
-
-    newValueTask = (e) => {
-        let value = e.target.value
-       this.setState (state =>({
-          editedValue : value,
-       }))
-      }
-    
-
-      saveInput = (event) => {
+    saveInput = (event) => {
         if(event.key === 'Enter') {
            /*  this.props.arrayOfTask.map(task => {
                 if(task.id === id) {
@@ -33,36 +25,38 @@ class ItemTodo extends React.Component {
             })
         }
      }
-    
 
-    //  variableTask = (id) => {
-    //     this.props.arrayOfTask.map(task => {
-    //         if(task.id === id) {
-    //             task.inputValue = this.state.editedValue
-    //         }
-    //  })
-    // }
+    newValueTask = (e) => {
+        let value = e.target.value
+        this.setState (state =>({
+        editedValue : value,
+    }))
+  } 
 
-
-      handlDblClick = (id) => {
-           this.props.arrayOfTask.map(task => {
+    handlDblClick = (id) => {     
+    this.setState(state => ({
+        inputStateAfterClick: !state.inputStateAfterClick
+    }))
+        // if(this.state.inputStateAfterClick) {
+            this.props.arrayOfTask.map(task => {
                 if(task.id === id) {
                     task.inputValue = this.state.editedValue
                 }
             })
-        this.setState(state => ({
-            inputStateAfterClick: !state.inputStateAfterClick
-        }))
-    }
+    // }
+  }
+
+
+    //   shouldComponentUpdate() {
+    //       return this.props.arrayOfTask 
+    //   }
    
 
     render() {
         const {inputValue, id, completed, completedTask,removeTask, isDoubleClick,handlDblClick, newValueTask, editedValue, inputStateAfterClick ,  saveInput} = this.props;
-        // console.log(this.state.newValue)
-        const arr = !this.state.inputStateAfterClick ? this.state.editedValue : inputValue ;
 
+        const arr = !this.state.inputStateAfterClick ? this.state.editedValueNew : inputValue ;
         const toggleCheck = completed ? true : false;
-
         return( 
             <div className="item-todo">
 
@@ -79,7 +73,7 @@ class ItemTodo extends React.Component {
                 <div onDoubleClick={() => this.handlDblClick(id)}>
                     <input 
                     className={`item-todo__input ${toggleCheck && 'completed'}`}
-                  /*   defaultValue={inputValue} */
+                    defaultValue={inputValue}
                     value={arr} 
                     disabled={this.state.inputStateAfterClick}
                     onKeyPress={this.saveInput}

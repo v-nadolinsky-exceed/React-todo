@@ -10,7 +10,7 @@ class App extends React.Component {
   state = {
       arrayOfTask : [],
       inputValue: '',
-     /*  editedValue: '', */
+      editedValue: '',
       inputStateAfterClick: true,
       currentValueForFilter: "all",
       allCompleted: false
@@ -95,14 +95,13 @@ class App extends React.Component {
     })
   }
 
-  
-
-
-  // handlDblClick = () => {
-  //       this.setState(state =>({
-  //           inputStateAfterClick: !state.inputStateAfterClick
-  //       }))
-  // }
+//   newValueTask = (e) => {
+//     let value = e.target.value
+//     this.setState (state =>({
+//         editedValue : value,
+//     }))
+// } 
+ 
 
   render() {
     console.log(this.state.editedValue)
