@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import { ToastContainer, toast } from 'react-toastify';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import ItemList from './components/ItemList';
@@ -28,7 +29,8 @@ class App extends React.Component {
  addTask = (event) => {
    const {inputValue, arrayOfTask ,editedValue,inputStateAfterClick} = this.state
   if(event.key === 'Enter' && event.target.value !== '') {
-      const newElem = {id: +new Date(), inputValue, completed: false } 
+      const newElem = {id: +new Date(), inputValue, completed: false }
+      toast(`Add task: ${inputValue}`)
       this.setState({
         arrayOfTask: [...arrayOfTask, newElem], 
         inputValue: ''
@@ -57,11 +59,15 @@ class App extends React.Component {
   completedTask = (id) => {
     this.setState(state => {
       const newArray = [...state.arrayOfTask]
-      newArray.map(task => { if(task.id === id) task.completed = !task.completed })
+      newArray.map(task => { 
+         if(task.id === id) {
+         task.completed = !task.completed;
+         toast.success(`Task completed: ${task.inputValue}`)
+        }})
       return {
         arrayOfTask: newArray
       }
-    })
+    }) 
   }
 
   removeCompletedTask = () => {
@@ -69,12 +75,16 @@ class App extends React.Component {
     const completedFalse = arrayOfTask.filter(elem =>{
         return elem.completed === false
         })
+    toast.warn("Remove completed task")
     this.setState({arrayOfTask : [...completedFalse] })
   }
 
   removeTask = (id) => {
     const data = this.state.arrayOfTask;
-    let newArr = data.filter(task => task.id !== id)
+    let newArr = data.filter(task => {
+      if(task.id === id ) toast.warn(`Remove task: ${task.inputValue}`)
+      return task.id !== id;
+    })
     this.setState({ arrayOfTask : newArr })
   }
 
@@ -88,11 +98,16 @@ class App extends React.Component {
         }
         return task
       })
+
+      if(this.state.allCompleted) toast.info("No tasks marked")
+      else toast.info("All tasks marked")
+
       return {
         arrayOfTask: newArray,
         allCompleted: !state.allCompleted
       }
     })
+
   }
 
 //   newValueTask = (e) => {
@@ -102,11 +117,10 @@ class App extends React.Component {
 //     }))
 // } 
  
-
   render() {
-    console.log(this.state.editedValue)
     return(
       <>
+      <ToastContainer />
       <h1 className="title">todos</h1>
       <div className="container">
       <Header

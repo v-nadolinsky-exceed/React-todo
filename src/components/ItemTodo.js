@@ -6,8 +6,6 @@ class ItemTodo extends React.Component {
         inputStateAfterClick: this.props.inputStateAfterClick,
         newValue: '',
         editedValue: ''
-        // editedValueNew: this.props.editedValue,
-        // arrayOfTask: this.props.arrayOfTask
 
         // text which we get frop this.props.text  for example
         // flag which help to switch between two states 

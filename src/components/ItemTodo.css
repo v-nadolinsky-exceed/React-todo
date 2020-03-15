@@ -37,7 +37,7 @@
 .item-todo__input {
     border: none;
     outline: 0;
-  /*   background: white; */
+    background: white;
     margin-left: 30px;
     height: 25px;
     width: 400px;
