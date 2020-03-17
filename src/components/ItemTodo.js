@@ -1,59 +1,39 @@
 import React from 'react';
+import axios from 'axios';
 import './ItemTodo.css'
 
 class ItemTodo extends React.Component {
     state = {
         inputStateAfterClick: this.props.inputStateAfterClick,
-        newValue: '',
-        editedValue: ''
-
-        // text which we get frop this.props.text  for example
-        // flag which help to switch between two states 
+        inputValue: this.props.inputValue
     }
 
     saveInput = (event) => {
-        if(event.key === 'Enter') {
-           /*  this.props.arrayOfTask.map(task => {
-                if(task.id === id) {
-                    task.inputValue = this.state.editedValue
-                }
-            }) */
+        if(event.key === 'Enter' ) {
             this.setState({
                 inputStateAfterClick: true
             })
+            this.props.getTask(event.currentTarget.id, this.state.inputValue)
         }
      }
 
     newValueTask = (e) => {
         let value = e.target.value
         this.setState (state =>({
-        editedValue : value,
+            inputValue : value,
     }))
-  } 
+    } 
 
     handlDblClick = (id) => {     
-    this.setState(state => ({
-        inputStateAfterClick: !state.inputStateAfterClick
-    }))
-        // if(this.state.inputStateAfterClick) {
-            this.props.arrayOfTask.map(task => {
-                if(task.id === id) {
-                    task.inputValue = this.state.editedValue
-                }
-            })
-    // }
+        this.setState(state => ({
+            inputStateAfterClick: !state.inputStateAfterClick
+        }))
+    
+    
   }
 
-
-    //   shouldComponentUpdate() {
-    //       return this.props.arrayOfTask 
-    //   }
-   
-
     render() {
-        const {inputValue, id, completed, completedTask,removeTask, isDoubleClick,handlDblClick, newValueTask, editedValue, inputStateAfterClick ,  saveInput} = this.props;
-
-        const arr = !this.state.inputStateAfterClick ? this.state.editedValueNew : inputValue ;
+        const { id, completed, completedTask,removeTask } = this.props;
         const toggleCheck = completed ? true : false;
         return( 
             <div className="item-todo">
@@ -70,12 +50,11 @@ class ItemTodo extends React.Component {
                 </label>
                 <div onDoubleClick={() => this.handlDblClick(id)}>
                     <input 
+                    id={id}
                     className={`item-todo__input ${toggleCheck && 'completed'}`}
-                    defaultValue={inputValue}
-                    value={arr} 
+                    value={this.state.inputValue} 
                     disabled={this.state.inputStateAfterClick}
                     onKeyPress={this.saveInput}
-                    // onClick={() => this.variableTask(id)}
                     onChange={this.newValueTask}
                     /> 
 

@@ -2,13 +2,14 @@ import React from 'react';
 import ItemTodo from './ItemTodo';
 
 const ItemList = (props) => {
-     const { generateArrayWithFilter, completedTask ,removeTask,handlDblClick,newValueTask,isDoubleClick, saveInput,inputStateAfterClick,arrayOfTask,editedValue} = props;
+     const { generateArrayWithFilter, completedTask ,removeTask,handlDblClick,newValueTask,isDoubleClick, saveInput,inputStateAfterClick,arrayOfTask,editedValue,getTask} = props;
     const currentArrayOfTasks = generateArrayWithFilter();
 
     return (
         <div className="item-list">
             {
             currentArrayOfTasks.map(task => <ItemTodo key={task.id} 
+                getTask={getTask}
                 handlDblClick={handlDblClick} 
                 removeTask={removeTask} 
                 completedTask={completedTask} 
@@ -18,7 +19,8 @@ const ItemList = (props) => {
                 inputStateAfterClick={inputStateAfterClick}
                 arrayOfTask={arrayOfTask}
                 editedValue={editedValue}
-                {...task}/>)
+                {...task}
+                />)
             }
         </div>
     )
