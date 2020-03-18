@@ -110,7 +110,7 @@ class App extends React.Component {
          task.completed = !task.completed;
 
          axios.put(`http://localhost:1234/todos/${id}/update`,{
-            completed: true
+            completed: task.completed
          }).then(res => console.log("ok",res))
            .catch(err => console.log(err))
 
