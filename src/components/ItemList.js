@@ -2,7 +2,7 @@ import React from 'react';
 import ItemTodo from './ItemTodo';
 
 const ItemList = (props) => {
-     const { generateArrayWithFilter, completedTask ,removeTask,handlDblClick,newValueTask,isDoubleClick, saveInput,inputStateAfterClick,arrayOfTask,editedValue,getTask} = props;
+    const { generateArrayWithFilter, completedTask ,removeTask,handlDblClick,newValueTask,isDoubleClick, saveInput,inputStateAfterClick,arrayOfTask,editedValue,getTask} = props;
     const currentArrayOfTasks = generateArrayWithFilter();
 
     return (

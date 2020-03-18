@@ -17,14 +17,14 @@ class ItemTodo extends React.Component {
         }
      }
 
-    newValueTask = (e) => {
-        let value = e.target.value
+    newValueTask = (event) => {
+        let value = event.target.value
         this.setState (state =>({
             inputValue : value,
     }))
     } 
 
-    handlDblClick = (id) => {     
+    handlDblClick = () => {     
         this.setState(state => ({
             inputStateAfterClick: !state.inputStateAfterClick
         }))
@@ -48,7 +48,7 @@ class ItemTodo extends React.Component {
                 onChange={() => completedTask(id)}
                 />  
                 </label>
-                <div onDoubleClick={() => this.handlDblClick(id)}>
+                <div onDoubleClick={this.handlDblClick}>
                     <input 
                     id={id}
                     className={`item-todo__input ${toggleCheck && 'completed'}`}
