@@ -18,24 +18,20 @@ class App extends React.Component {
   }
 
 
-  componentDidMount() {
-    axios.get(`http://localhost:1234/todos/all`)
-      .then(res => {
-        console.log(res)
-        const arrTask = []
-          res.data.forEach(elem => {
-            const arr = {
-              id : elem._id,
-              inputValue: elem.text,
-              completed: elem.completed
-            };
-            arrTask.push(arr)
-          })
-          console.log(arrTask)
-                  this.setState({
-                    arrayOfTask : arrTask
-                  })
-      }).catch(err => console.log(err))
+  async componentDidMount() {
+      try{
+        const request = await axios.get(`http://localhost:1234/todos/all`)
+        const arrTask =  request.data.map(task => {
+          return {id : task._id,
+           inputValue : task.text,
+           completed : task.completed}
+      })
+        this.setState({
+        arrayOfTask : arrTask
+      })
+      }catch(err) {
+        console.error(err)
+      }
   }
 
 
@@ -49,7 +45,7 @@ class App extends React.Component {
    const {inputValue, arrayOfTask } = this.state
   if(event.key === 'Enter' && event.target.value !== '') {
       const id = +new Date()
-      const newElem = {id: id, inputValue, completed: false } 
+      const newElem = { id, inputValue, completed: false } 
       toast(`Add task: ${inputValue}`)
       this.setState({
         arrayOfTask: [...arrayOfTask, newElem], 
@@ -57,8 +53,7 @@ class App extends React.Component {
       })
       const newElem2 = { _id:id , text:inputValue ,completed:false }
       axios.post(`http://localhost:1234/todos/create`, {...newElem2})
-      .then(res => console.log(res))
-      .catch(err => console.log('err',err))
+      .catch(err => console.error('err',err))
     }
   }
 
@@ -69,8 +64,7 @@ class App extends React.Component {
           if(task.id == id) {
             axios.put(`http://localhost:1234/todos/${id}/update`,{
               text: value
-         }).then(res => console.log("ok",res))
-           .catch(err => console.log(err))
+         }).catch(err => console.error(err))
               task.inputValue = value
           }
         })
@@ -107,8 +101,7 @@ class App extends React.Component {
 
          axios.put(`http://localhost:1234/todos/${id}/update`,{
             completed: task.completed
-         }).then(res => console.log("ok",res))
-           .catch(err => console.log(err))
+         }).catch(err => console.error(err))
 
          toast.success(`Task completed: ${task.inputValue}`)
         }})
@@ -125,8 +118,7 @@ class App extends React.Component {
         if(elem.completed === true) {
 
           axios.delete(`http://localhost:1234/todos/${elem.id}/delete`)
-          .then(res => console.log('delete',res))
-          .catch(err => console.log(err))
+          .catch(err => console.error(err))
         }
 
         return elem.completed === false
@@ -142,8 +134,7 @@ class App extends React.Component {
       if(task.id === id ) {
 
         axios.delete(`http://localhost:1234/todos/${id}/delete`)
-          .then(res => console.log('delete',res))
-          .catch(err => console.log(err))
+          .catch(err => console.error(err))
 
         toast.warn(`Remove task: ${task.inputValue}`)
       }
@@ -164,8 +155,7 @@ class App extends React.Component {
         }
         axios.put(`http://localhost:1234/todos/${task.id}/update`,{
             completed: task.completed
-         }).then(res => console.log("ok",res))
-           .catch(err => console.log(err))
+         }).catch(err => console.error(err))
         return task
       })
 
