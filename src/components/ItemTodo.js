@@ -19,7 +19,13 @@ class ItemTodo extends React.Component {
 
     newValueTask = (event) => {
         let value = event.target.value
+<<<<<<< HEAD
         this.setState ({inputValue : value})
+=======
+        this.setState (state =>({
+            inputValue : value,
+    }))
+>>>>>>> 400fbae2374b28eda78311ca98ff9b0ebdd61b58
     } 
 
     handlDblClick = () => {     

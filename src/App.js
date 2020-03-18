@@ -143,7 +143,6 @@ class App extends React.Component {
     this.setState({ arrayOfTask : newArr })
   }
 
-  
   allCompleted = () => {
     this.setState(state => {
       const newArray = [...state.arrayOfTask].map(task => {
