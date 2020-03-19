@@ -44,14 +44,14 @@ class App extends React.Component {
  addTask = (event) => {
    const {inputValue, arrayOfTask } = this.state
   if(event.key === 'Enter' && event.target.value !== '') {
-      const id = +new Date()
-      const newElem = { id, inputValue, completed: false } 
+      // const id = +new Date()
+      const newElem = { id: _id, inputValue, completed: false } 
       toast(`Add task: ${inputValue}`)
       this.setState({
         arrayOfTask: [...arrayOfTask, newElem], 
         inputValue: ''
       })
-      const newElem2 = { _id:id , text:inputValue ,completed:false }
+      const newElem2 = { text:inputValue ,completed:false }
       axios.post(`http://localhost:1234/todos/create`, {...newElem2})
       .then(res => console.log(res))
       .catch(err => console.error('err',err))
@@ -59,14 +59,16 @@ class App extends React.Component {
   }
 
   getTask = (id,value) => {
+    axios.put(`http://localhost:1234/todos/${id}/update`,{text: value})
+      .then(res => {
+
+      })
     this.setState(state => {
       const newArr = [...state.arrayOfTask]
       newArr.map(task => {
           if(task.id == id) {
 
-         axios.put(`http://localhost:1234/todos/${id}/update`,{
-              text: value
-         })
+         
          .then(res => {
            console.log(res)
            task.inputValue = value
@@ -100,95 +102,65 @@ class App extends React.Component {
     }
   }
 
-  // completedTask = (id) => {
-  //   this.setState(state => {
-  //     const newArray = [...state.arrayOfTask]
-  //     newArray.map(task => { 
-  //        if(task.id === id) {
-  //         task.completed = !task.completed;
-  //        axios.put(`http://localhost:12hjkh34/todos/${id}/update`,{
-  //           completed: task.completed
-  //        })
-  //        .then(res => {
-  //          console.log(res)
-  //         return task.completed
-  //         })
-  //        .catch(err => console.error(err))
-
-  //        toast.success(`Task completed: ${task.inputValue}`)
-  //       }})
-  //     return {
-  //       arrayOfTask: newArray
-  //     }
-  //   }) 
-  // }
-
-
 
   completedTask = (id) => {
-   
+    axios.put(`http://localhost:1234/todos/${id}/update`,{
+      completed: id.completed
+   })
+    .then(res => {
       const newArray = [...this.state.arrayOfTask]
       newArray.map(task => { 
          if(task.id === id) {
           task.completed = !task.completed;
-
-          axios.put(`http://localhost:1234/todos/${id}/update`,{
-            completed: task.completed
-         })
-         .then(res => {
-           console.log(res)
-           this.setState({arrayOfTask: newArray})
-          })
-         .catch(err => console.error(err))
-          
          toast.success(`Task completed: ${task.inputValue}`)
         }
-      
       })
+      console.log(res)
+      this.setState({arrayOfTask: newArray})
+   })
+  .catch(err => console.error(err))
+      
   }
 
 
   removeCompletedTask = () => {
-    const { arrayOfTask } = this.state
-    const completedFalse = arrayOfTask.filter(elem => {
-        if(elem.completed === true) {
-
-          axios.delete(`http://localhost:1234/todos/${elem.id}/delete`)
-          .then(res => {
-            // elem.completed === false
-            console.log(res)
-          }
-          )
-          .catch(err => console.error(err))
-
-        }
-        return elem.completed === false
-        })
-    toast.warn("Remove completed task")
-    this.setState({arrayOfTask : [...completedFalse] })
+    axios.delete(`http://localhost:1234/todos/${elem.id}/delete`)
+    .then(res => {
+      console.log(res)
+      const { arrayOfTask } = this.state
+      const completedFalse = arrayOfTask.filter(elem => {
+          return elem.completed === false
+          })
+      toast.warn("Remove completed task")
+      this.setState({arrayOfTask : [...completedFalse] })
+    })
+    .catch(err => console.error(err))
+   
   }
 
 
   removeTask = (id) => {
+    axios.delete(`http://localhost:1234/todos/${id}/delete`)
+    .then(res => {
       const data = this.state.arrayOfTask;
       const newArr = data.filter(task => {
         if(task.id === id ) {
           toast.warn(`Remove task: ${task.inputValue}`)
         }
-
         return task.id !== id;
       })
-
-      axios.delete(`http://localhost:1234/todos/${id}/delete`)
-          .then(res => {
-              console.log(res)
-              this.setState({ arrayOfTask : newArr })
-          })
-          .catch(err => console.error(err))
+      this.setState({ arrayOfTask : newArr })
+    })
+    .catch(err => console.error(err))
+          
   }
 
 
   allCompleted =  () => {
+    axios.put(`http://localhost:1234/todo/${task.id}/update`,{
+      completed: task.completed
+    })
+    .then(res => {
       const newArray = [...this.state.arrayOfTask].map(task => {
         if (this.state.allCompleted) {
           task.completed = false
@@ -196,32 +168,15 @@ class App extends React.Component {
         } else {
           task.completed = true
         }
-
-         axios.put(`http://localhost:1234/todo/${task.id}/update`,{
-            completed: task.completed
-          })
-         .then(res => {
-         console.log(res)
-          // this.setState({
-          //   arrayOfTask: newArray,
-          //   allCompleted: !this.state.allCompleted
-        //  })
-            
-         })
-         .catch(err => console.error(err))
-
-         return task
+        return task
       })
-
-      
-      this.setState({
-        arrayOfTask: newArray,
-        allCompleted: !this.state.allCompleted
-      })
-
-      if(this.state.allCompleted) toast.info("No tasks marked")
+        this.setState({
+          arrayOfTask: newArray,
+          allCompleted: !this.state.allCompleted
+       })
+       if(this.state.allCompleted) toast.info("No tasks marked")
       else toast.info("All tasks marked")
-
+    })
 
   }
  
