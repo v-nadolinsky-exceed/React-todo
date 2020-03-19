@@ -5,7 +5,7 @@ import './ItemTodo.css'
 class ItemTodo extends React.Component {
     state = {
         inputStateAfterClick: this.props.inputStateAfterClick,
-        inputValue: this.props.inputValue
+        inputValue: this.props.text
     }
 
     saveInput = (event) => {
@@ -20,7 +20,8 @@ class ItemTodo extends React.Component {
     newValueTask = (event) => {
         let value = event.target.value
         this.setState ({inputValue : value})
-    }
+
+    } 
 
     handlDblClick = () => {     
         this.setState(state => ({

@@ -9,7 +9,7 @@ const ItemList = (props) => {
     return (
         <div className="item-list">
             {
-            currentArrayOfTasks.map(task => <ItemTodo key={task.id} 
+            currentArrayOfTasks.map(task => <ItemTodo key={task._id} 
                 getTask={getTask}
                 handlDblClick={handlDblClick} 
                 removeTask={removeTask} 
