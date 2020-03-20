@@ -38,7 +38,7 @@ class App extends React.Component {
   addTask = (event) => {
    const {inputValue, arrayOfTask } = this.state
    if(event.key === 'Enter' && event.target.value !== '') {
-    const newElem = {  text:inputValue ,completed:false }
+    const newElem = {  text:inputValue ,completed :false }
     axios.post(`http://localhost:1234/todos/create`, {...newElem})
       .then(res => {
         console.log(res)
@@ -55,7 +55,7 @@ class App extends React.Component {
   getTask = (id,value) => {
     const newArr = [...this.state.arrayOfTask];
         newArr.map(task => {
-          if(task.id == id) {
+          if(task._id === id) {
            return {...task, inputValue : value}
           }
         })
@@ -66,11 +66,14 @@ class App extends React.Component {
       .catch(err => console.error(err))
   }
 
+
   setFilter = (value) => {
     this.setState({currentValueForFilter: value})
   }
 
+
   filterArrayOfItems = (array, condition) => array.filter(item => item.completed !== condition)
+
 
   generateArrayWithFilter = () => {
     const { arrayOfTask, currentValueForFilter } = this.state;
@@ -88,43 +91,42 @@ class App extends React.Component {
   // completedTask = (id) => {
   //   const newArray = [...this.state.arrayOfTask];
   //   newArray.map(task => { 
-  //     if(task.id === id) {
+  //     console.log(task._id)
+  //     if(task._id === id) {
   //     return {...task, completed:!task.completed}
   //     }
   // })
-
-  //   axios.put(`http://localhost:1234/todos/${id}/update`,{completed: task.completed })
+  //   axios.put(`http://localhost:1234/todos/${id}/update`)
   //     .then(res => {
-  //     toast.success(`Task completed: ${task.inputValue}`)
+  //     toast.success(`Task completed:${res.data.text}`)
   //     this.setState({arrayOfTask: newArray})
   //   })
   //     .catch(err => console.error(err)) 
   // }
 
 
-  // removeCompletedTask = () => {
-  //   const { arrayOfTask } = this.state;
-  //   const completedFalse = arrayOfTask.filter(elem => {
-  //     return elem.completed === false
-  //   })
-  //   axios.delete(`http://localhost:1234/todos/${elem.id}/delete`)
-  //     .then(res => {  
-  //       toast.warn("Remove completed task")
-  //       this.setState({arrayOfTask : [...completedFalse] })
-  //     })
-  //     .catch(err => console.error(err))
-  // }
+  removeCompletedTask = () => {
+    const { arrayOfTask } = this.state;
+    const completedFalse = arrayOfTask.filter(elem => {
+      return elem.completed === false
+    })
+    axios.delete(`http://localhost:1234/todos/deletecompl`)
+      .then(res => {  
+        toast.warn("Remove completed task")
+        this.setState({arrayOfTask : [...completedFalse] })
+      })
+      .catch(err => console.error(err))
+  }
 
 
   removeTask = (id) => {
     const data = this.state.arrayOfTask;
-        let newArr = data.filter(task => {
+        const newArr = data.filter(task => {
           if(task.id === id ) toast.warn(`Remove task: ${task.inputValue}`)
-          return task.id !== id;
+          return task._id != id;
         })
     axios.delete(`http://localhost:1234/todos/${id}/delete`)
       .then(res => {
-        
         this.setState({ arrayOfTask : newArr })
       })
       .catch(err => console.error(err))

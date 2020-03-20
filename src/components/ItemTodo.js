@@ -13,10 +13,9 @@ class ItemTodo extends React.Component {
             this.setState({
                 inputStateAfterClick: true
             })
-            this.props.getTask(event.currentTarget.id, this.state.inputValue)
+            this.props.getTask(event.currentTarget._id, this.state.inputValue)
         }
      }
-
     newValueTask = (event) => {
         let value = event.target.value
         this.setState ({inputValue : value})
@@ -30,25 +29,26 @@ class ItemTodo extends React.Component {
     }
 
     render() {
-        const { id, completed, completedTask,removeTask } = this.props;
-        const toggleCheck = completed ? true : false;
+        const { _id, completed, completedTask,removeTask } = this.props;
+        // console.log(_id)
+        // const toggleCheck = completed ? true : false;
         return( 
             <div className="item-todo">
 
                 <label>
                     <div className="item__check"></div>
-                    <div className={`check ${toggleCheck && 'active'}`}></div>
+                    <div className={`check ${completed && 'active'}`}></div>
                 <input  
                 className="item-todo__checkbox "
                 type="checkbox"
                 checked={completed}
-                onChange={() => completedTask(id)}
+                onChange={() => completedTask(_id)}
                 />  
                 </label>
                 <div onDoubleClick={this.handlDblClick}>
                     <input 
-                    id={id}
-                    className={`item-todo__input ${toggleCheck && 'completed'}`}
+                    id={_id}
+                    className={`item-todo__input ${completed && 'completed'}`}
                     value={this.state.inputValue} 
                     disabled={this.state.inputStateAfterClick}
                     onKeyPress={this.saveInput}
@@ -56,7 +56,7 @@ class ItemTodo extends React.Component {
                     /> 
 
                 </div>              
-                <span onClick={() => removeTask(id)} className="close"></span>
+                <span onClick={() => removeTask(_id)} className="close"></span>
                 
             </div>               
         )
